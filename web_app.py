@@ -20,9 +20,241 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# CSS customizado
+# Inicializar estado da sessão
+if 'page' not in st.session_state:
+    st.session_state.page = 'home'
+
+# CSS customizado profissional
 st.markdown("""
 <style>
+    /* Remover padding padrão */
+    .main .block-container {
+        padding-top: 0rem;
+        padding-bottom: 0rem;
+        max-width: 100%;
+    }
+    
+    /* Navbar */
+    .navbar {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        padding: 1rem 5%;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .logo {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #2d3748;
+    }
+    
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 8rem 5% 6rem 5%;
+        color: white;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.05)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+        opacity: 0.3;
+    }
+    
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.4rem;
+        opacity: 0.95;
+        margin-bottom: 2.5rem;
+        font-weight: 300;
+        line-height: 1.6;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Buttons */
+    .cta-primary {
+        background: white;
+        color: #667eea;
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        display: inline-block;
+        text-decoration: none;
+    }
+    
+    .cta-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+    
+    /* Section Styling */
+    .section {
+        padding: 5rem 5%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #2d3748;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1.2rem;
+        color: #718096;
+        text-align: center;
+        margin-bottom: 4rem;
+        font-weight: 300;
+    }
+    
+    /* Stats Box */
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+    
+    .stat-box {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+    
+    .stat-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .stat-label {
+        font-size: 1rem;
+        color: #718096;
+        margin-top: 0.5rem;
+        font-weight: 500;
+    }
+    
+    /* Feature Cards */
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+    
+    .feature-card {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border-top: 4px solid #667eea;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    }
+    
+    .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .feature-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 1rem;
+    }
+    
+    .feature-description {
+        color: #718096;
+        line-height: 1.7;
+        font-size: 1rem;
+    }
+    
+    /* Testimonial / Benefits */
+    .benefit-box {
+        background: linear-gradient(135deg, #f6f8fb 0%, #ffffff 100%);
+        padding: 2rem;
+        border-radius: 15px;
+        margin: 1rem 0;
+        border-left: 4px solid #667eea;
+        transition: all 0.3s ease;
+    }
+    
+    .benefit-box:hover {
+        transform: translateX(10px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.1);
+    }
+    
+    /* CTA Section */
+    .cta-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 5rem 5%;
+        color: white;
+        text-align: center;
+        margin-top: 4rem;
+    }
+    
+    /* Footer */
+    .footer {
+        background: #2d3748;
+        color: white;
+        padding: 3rem 5%;
+        text-align: center;
+    }
+    
+    .footer a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    
+    /* App page styling */
     .main-header {
         font-size: 2.5rem;
         font-weight: bold;
@@ -30,6 +262,7 @@ st.markdown("""
         text-align: center;
         padding: 1rem 0;
     }
+    
     .metric-card {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         padding: 1.5rem;
@@ -37,28 +270,321 @@ st.markdown("""
         color: white;
         text-align: center;
     }
+    
     .success-card {
         background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
         padding: 1rem;
         border-radius: 8px;
         margin: 0.5rem 0;
     }
+    
     .error-card {
         background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
         padding: 1rem;
         border-radius: 8px;
         margin: 0.5rem 0;
     }
+    
     .stButton>button {
         width: 100%;
-        background-color: #1f77b4;
+        background-color: #667eea;
         color: white;
         border-radius: 8px;
         padding: 0.75rem;
         font-weight: bold;
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .stButton>button:hover {
+        background-color: #764ba2;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
     }
 </style>
 """, unsafe_allow_html=True)
+
+
+def landing_page():
+    """Renderiza a landing page profissional"""
+    
+    # Navbar
+    st.markdown("""
+    <div class="navbar">
+        <div class="logo">🛡️ DataSentinel</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Hero Section
+    st.markdown("""
+    <div class="hero-section">
+        <div class="hero-title">
+            Validação de Qualidade de Dados<br>Simples, Poderosa e Visual
+        </div>
+        <div class="hero-subtitle">
+            Detecte problemas de qualidade antes que eles afetem suas análises.<br>
+            Interface moderna, testes automatizados e relatórios em tempo real.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Botão CTA no hero
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        if st.button("🚀 Começar Gratuitamente", use_container_width=True, type="primary", key="hero_cta"):
+            st.session_state.page = 'app'
+            st.rerun()
+    
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
+    # Stats Section
+    st.markdown("""
+    <div class="section">
+        <div class="stats-container">
+            <div class="stat-box">
+                <div class="stat-number">5+</div>
+                <div class="stat-label">Tipos de Validação</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Conectores Integrados</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">96%</div>
+                <div class="stat-label">Cobertura de Testes</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Open Source</div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # About Section
+    st.markdown("""
+    <div class="section">
+        <div class="section-title">O que é o DataSentinel?</div>
+        <div class="section-subtitle">
+            Uma plataforma completa para garantir a qualidade dos seus dados
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        st.markdown("""
+        <div style="padding: 2rem;">
+            <h3 style="color: #2d3748; font-size: 1.8rem; margin-bottom: 1.5rem;">
+                Validação de Dados Nunca Foi Tão Fácil
+            </h3>
+            <p style="color: #718096; font-size: 1.1rem; line-height: 1.8;">
+                O DataSentinel é uma ferramenta moderna de validação de qualidade de dados 
+                que permite testar, validar e monitorar a integridade dos seus dados de 
+                forma automatizada e visual.
+            </p>
+            <br>
+            <p style="color: #718096; font-size: 1.1rem; line-height: 1.8;">
+                Desenvolvido para <strong>analistas de dados</strong>, 
+                <strong>engenheiros de dados</strong> e <strong>cientistas de dados</strong> 
+                que precisam garantir a qualidade antes de análises críticas.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div style="padding: 2rem;">
+            <div class="benefit-box">
+                <h4 style="color: #2d3748; margin: 0 0 0.5rem 0;">✅ Sem Configuração Complexa</h4>
+                <p style="margin: 0; color: #718096;">Interface intuitiva pronta para uso</p>
+            </div>
+            <div class="benefit-box">
+                <h4 style="color: #2d3748; margin: 0 0 0.5rem 0;">⚡ Resultados em Tempo Real</h4>
+                <p style="margin: 0; color: #718096;">Visualize problemas instantaneamente</p>
+            </div>
+            <div class="benefit-box">
+                <h4 style="color: #2d3748; margin: 0 0 0.5rem 0;">📊 Relatórios Visuais</h4>
+                <p style="margin: 0; color: #718096;">Gráficos interativos e dashboards</p>
+            </div>
+            <div class="benefit-box">
+                <h4 style="color: #2d3748; margin: 0 0 0.5rem 0;">🔌 Múltiplas Fontes</h4>
+                <p style="margin: 0; color: #718096;">PostgreSQL, CSV e dados simulados</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Features Section
+    st.markdown("""
+    <div class="section">
+        <div class="section-title">Recursos Principais</div>
+        <div class="section-subtitle">
+            Tudo que você precisa para garantir a qualidade dos seus dados
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="section">
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎭</div>
+                <div class="feature-title">Mock Connector</div>
+                <div class="feature-description">
+                    Teste suas validações sem necessidade de banco de dados real. 
+                    Inclui 4 tabelas simuladas com dados realistas para desenvolvimento 
+                    e testes rápidos.
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <div class="feature-title">Validações Inteligentes</div>
+                <div class="feature-description">
+                    5 tipos de validação prontas: valores nulos, intervalos, 
+                    unicidade, detecção de outliers e padrões regex. 
+                    Configure em segundos.
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <div class="feature-title">Visualizações Interativas</div>
+                <div class="feature-description">
+                    Dashboard moderno com gráficos de gauge, barras e sunburst. 
+                    Entenda seus dados visualmente e exporte relatórios.
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <div class="feature-title">Detecção de Outliers</div>
+                <div class="feature-description">
+                    Identifique automaticamente valores anômalos usando 
+                    Z-score ou IQR. Proteja suas análises de dados problemáticos.
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💾</div>
+                <div class="feature-title">Múltiplas Fontes</div>
+                <div class="feature-description">
+                    Conecte-se a PostgreSQL, carregue arquivos CSV ou use dados 
+                    simulados. Flexibilidade total para seu workflow.
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📥</div>
+                <div class="feature-title">Export & Relatórios</div>
+                <div class="feature-description">
+                    Exporte resultados em JSON ou CSV. Integre facilmente 
+                    com suas ferramentas de BI e relatórios automatizados.
+                </div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Use Cases Section
+    st.markdown("""
+    <div class="section" style="background: #f7fafc; padding: 5rem 5%; margin: 3rem -5%;">
+        <div class="section-title">Para Quem é o DataSentinel?</div>
+        <div class="section-subtitle">
+            Profissionais de dados que precisam de qualidade e confiabilidade
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("""
+        <div style="text-align: center; padding: 2rem;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">👨‍💻</div>
+            <h3 style="color: #2d3748; margin-bottom: 1rem;">Engenheiros de Dados</h3>
+            <p style="color: #718096; line-height: 1.7;">
+                Valide pipelines ETL/ELT, garanta qualidade em data warehouses 
+                e automatize checks em processos de ingestão.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div style="text-align: center; padding: 2rem;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
+            <h3 style="color: #2d3748; margin-bottom: 1rem;">Analistas de Dados</h3>
+            <p style="color: #718096; line-height: 1.7;">
+                Verifique a qualidade antes de análises críticas, 
+                detecte inconsistências e garanta relatórios confiáveis.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div style="text-align: center; padding: 2rem;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">🔬</div>
+            <h3 style="color: #2d3748; margin-bottom: 1rem;">Cientistas de Dados</h3>
+            <p style="color: #718096; line-height: 1.7;">
+                Prepare datasets para machine learning, identifique outliers 
+                e garanta features de qualidade para seus modelos.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # CTA Final
+    st.markdown("""
+    <div class="cta-section">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem; font-weight: 800;">
+                Pronto para Garantir a Qualidade dos Seus Dados?
+            </h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2.5rem; opacity: 0.95;">
+                Comece gratuitamente agora. Sem cartão de crédito, sem instalação complexa.
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        if st.button("🚀 Testar Agora", use_container_width=True, type="primary", key="footer_cta"):
+            st.session_state.page = 'app'
+            st.rerun()
+    
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
+    # Footer
+    st.markdown("""
+    <div class="footer">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="margin-bottom: 2rem;">
+                <div style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">
+                    🛡️ DataSentinel
+                </div>
+                <p style="color: #a0aec0; font-size: 1rem;">
+                    Validação Profissional de Qualidade de Dados
+                </p>
+            </div>
+            
+            <div style="padding: 2rem 0; border-top: 1px solid rgba(255,255,255,0.1);">
+                <p style="margin: 0.5rem 0; color: #a0aec0;">
+                    Open Source sob MIT License
+                </p>
+                <p style="margin: 0.5rem 0;">
+                    <a href="https://github.com/davimatosms/DataSentinel" target="_blank">
+                        GitHub Repository
+                    </a>
+                </p>
+                <p style="margin: 1.5rem 0 0 0; color: #718096; font-size: 0.9rem;">
+                    © 2026 DataSentinel. Todos os direitos reservados.
+                </p>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 def initialize_session_state():
@@ -465,10 +991,26 @@ def display_validation_results():
 
 def main():
     """Função principal da aplicação"""
+    # Navegação
+    if st.session_state.page == 'home':
+        landing_page()
+    else:
+        application_page()
+
+
+def application_page():
+    """Página da aplicação de validação"""
     initialize_session_state()
     
-    # Header
-    st.markdown('<div class="main-header">🛡️ DataSentinel - Validação de Qualidade de Dados</div>', unsafe_allow_html=True)
+    # Header com botão de voltar
+    col1, col2 = st.columns([8, 2])
+    with col1:
+        st.markdown('<div class="main-header">🛡️ DataSentinel - Validação de Qualidade de Dados</div>', unsafe_allow_html=True)
+    with col2:
+        if st.button("🏠 Home", use_container_width=True):
+            st.session_state.page = 'home'
+            st.rerun()
+    
     st.markdown("---")
     
     # Sidebar
